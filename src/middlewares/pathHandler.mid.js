@@ -1,4 +1,4 @@
-import dbConnect from "../helpers/dbConnect.helper";
+import dbConnect from "../helpers/dbConnect.helper.js";
 
 const pathHandler = (req, res) => {
   const error = "Not Found URL";

@@ -1,4 +1,4 @@
-import { productsManager } from "../dao/managers/mongo.manager";
+import { productsManager } from "../dao/managers/mongo.manager.js";
 
 class Service {
   constructor(manager) {
