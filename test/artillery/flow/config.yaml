@@ -1,0 +1,24 @@
+config:
+  pluggins:
+    metrics by endpoint: {}
+  target: http://localhost:8080/api
+  phases:
+    - duration: 20
+      arrivalRate: 10
+scenarios:
+  - name: login, create a product & signout
+    flow:
+      - log: LOGIN
+      - post:
+          url: /auth/login
+          json:
+            email: m.e.altamirano88@gmail.com
+            password: tuki123
+      - log: CREATE PRODUCT
+      - post:
+          url: /products
+          json:
+            title: product test
+      - log: SIGNOUT
+      - post:
+          url: /auth/signout

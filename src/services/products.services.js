@@ -1,4 +1,4 @@
-import { productsManager } from "../dao/managers/mongo.manager.js";
+import { productsManager, usersManager } from "../dao/mongo.manager.js";
 
 class Service {
   constructor(manager) {
@@ -16,4 +16,5 @@ class Service {
 }
 
 const productsServices = new Service(productsManager);
-export { productsServices };
+const usersService = new Service(usersManager);
+export { productsServices, usersService };
