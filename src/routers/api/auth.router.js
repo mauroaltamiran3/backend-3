@@ -20,7 +20,7 @@ class AuthRouter extends CustomRouter {
   init = () => {
     this.create("/register", ["PUBLIC"], passportCb("register"), register);
     this.create("/login", ["PUBLIC"], passportCb("login"), login);
-    this.read("/signout", ["USER", "ADMIN"], signout);
+    this.create("/signout", ["USER", "ADMIN"], signout);
     this.create("/online", ["USER", "ADMIN"], online);
     this.read(
       "/google",

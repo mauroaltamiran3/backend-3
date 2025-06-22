@@ -1,32 +1,23 @@
 import passport from "./passport.mid.js";
 
 function passportCb(strategy) {
-  return function (req, res, next) {
-    return passport.authenticate(
-      strategy,
-      { session: false },
-      (err, user, info) => {
-        if (err) return next(err);
-
-        if (!user) {
-          if (strategy === "register") {
-            return res.redirect(
-              "/register?error=" +
-                encodeURIComponent(info?.message || "registro")
-            );
-          }
-          return res.redirect(
-            "/login?error=" +
-              encodeURIComponent(info?.message || "Credenciales inválidas")
-          );
+  return async function (req, res, next) {
+    return passport.authenticate(strategy, (err, user, info) => {
+      try {
+        if (err) {
+          return next(err);
         }
-
+        if (!user) {
+          const error = new Error(info.message || "Bad Auth");
+          error.statusCode = info.statusCode || 401;
+          throw error;
+        }
         req.user = user;
-        if (info?.token) req.token = info.token;
-
         next();
+      } catch (error) {
+        next(error);
       }
-    )(req, res, next);
+    })(req, res, next);
   };
 }
 

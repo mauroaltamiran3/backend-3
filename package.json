@@ -17,7 +17,8 @@
     "push-image": "docker push tukics/ecommerce:1.0.0",
     "apply-manifest": "kubectl apply -f manifest.yaml",
     "mocha": "mocha ./test/mocha",
-    "chai": "mocha ./test/chai/cart.test.js"
+    "chai": "mocha ./test/chai/cart.test.js",
+    "super": "mocha ./test/supertest"
   },
   "keywords": [],
   "author": "",
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.8.0",
-    "mocha": "^11.7.0"
+    "mocha": "^11.7.0",
+    "supertest": "^7.1.1"
   }
 }

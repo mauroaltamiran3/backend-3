@@ -35,7 +35,7 @@ class Controller {
 
   updateById = async (req, res) => {
     const { id } = req.params;
-    const { data } = req.body;
+    const data = req.body;
     const response = await this.service.updateById(id, data);
     if (!response) return res.json404();
     res.json200(response);
