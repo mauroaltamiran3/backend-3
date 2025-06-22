@@ -29,6 +29,12 @@ class CustomRouter {
       this.setMiddlewares(midds)
     );
   use = (path, ...midds) => this.router.use(path, this.setMiddlewares(midds));
+  patch = (path, policies, ...midds) =>
+    this.router.patch(
+      path,
+      setupPolicies(policies),
+      this.setMiddlewares(midds)
+    );
 }
 
 export default CustomRouter;

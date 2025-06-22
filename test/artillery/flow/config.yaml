@@ -1,24 +1,21 @@
 config:
-  pluggins:
-    metrics by endpoint: {}
-  target: http://localhost:8080/api
+  target: "http://localhost:8090/api"
+  http:
+    cookieJar: true
   phases:
     - duration: 20
       arrivalRate: 10
+
 scenarios:
-  - name: login, create a product & signout
+  - name: login & signout
     flow:
-      - log: LOGIN
+      - log: "▶️ Login"
       - post:
-          url: /auth/login
+          url: "/auth/login"
           json:
-            email: m.e.altamirano88@gmail.com
-            password: tuki123
-      - log: CREATE PRODUCT
+            email: "m.e.altamirano88@gmail.com"
+            password: "tuki123"
+      - think: 1
+      - log: "🔒 Signout"
       - post:
-          url: /products
-          json:
-            title: product test
-      - log: SIGNOUT
-      - post:
-          url: /auth/signout
+          url: "/auth/signout"

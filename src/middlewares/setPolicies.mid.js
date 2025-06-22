@@ -3,22 +3,25 @@ import { verifyToken } from "../helpers/token.helper.js";
 const setupPolicies = (policies) => async (req, res, next) => {
   try {
     if (policies.includes("PUBLIC")) return next();
-    const token = req?.cookies?.token;
-    const data = verifyToken(token);
-    const { role, user_id } = data;
-    if (!role || !user_id) return res.json401();
-    const roles = {
-      USER: policies.includes("USER"),
-      ADMIN: policies.includes("ADMIN"),
-    };
-    if (roles[role]) {
-      req.user = data;
-      return next();
-    } else {
-      res.json(403);
+
+    let token = req.cookies?.token;
+    if (!token && req.headers.authorization?.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1];
     }
-  } catch (error) {
-    next(error);
+    if (!token) {
+      return res.json401();
+    }
+
+    const payload = verifyToken(token);
+    req.user = payload;
+
+    if (!policies.includes(payload.role)) {
+      return res.json403();
+    }
+
+    next();
+  } catch (err) {
+    next(err);
   }
 };
 

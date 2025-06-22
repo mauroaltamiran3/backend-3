@@ -13,7 +13,7 @@ const setResponses = (req, res, next) => {
   res.json201 = (data) => successResponse(201, data);
   res.json400 = () => errorResponse(errors.client);
   res.json401 = () => errorResponse(errors.auth);
-  res.json403 = () => errorResponse(errors.forbidden);
+  res.json403 = () => errorResponse(errors);
   res.json404 = () => errorResponse(errors.notFound);
   res.json500 = () => errorResponse(errors.fatal);
   next();

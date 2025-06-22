@@ -1,0 +1,55 @@
+<div class="admin-products container">
+  <h1>{{title}}</h1>
+
+  <form id="productForm" class="form-products">
+    <input type="text" name="title" placeholder="Título" required />
+    <input type="number" name="price" placeholder="Precio" required />
+    <input type="number" name="stock" placeholder="Stock" />
+    <input type="text" name="code" placeholder="Código único" required />
+    <select name="category" required>
+      <option value="">Seleccionar categoría</option>
+      {{#each categorias}}
+        <option value="{{this}}">{{this}}</option>
+      {{/each}}
+    </select>
+    <input type="text" name="description" placeholder="Descripción" required />
+    <input type="url" name="image" placeholder="URL de imagen" required />
+    <button type="submit" class="btn-add">Agregar producto</button>
+  </form>
+
+  <div class="table-responsive">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Categoría</th>
+          <th>Código</th>
+          <th>Imagen</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each productos}}
+        <tr>
+          <td>{{this.title}}</td>
+          <td>${{formatNumber this.price}}</td>
+          <td class="stock-cell">
+            {{this.stock}}
+            <button class="btn-stock-increase" data-id="{{this._id}}">+</button>
+            <button class="btn-stock-decrease" data-id="{{this._id}}">−</button>
+          </td>
+          <td>{{this.category}}</td>
+          <td>{{this.code}}</td>
+          <td><img src="{{this.image}}" alt="Imagen de {{this.title}}" class="img-mini"></td>
+          <td><button class="btn-eliminar" data-id="{{this._id}}">Eliminar</button></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="/js/products.js"></script>
+<script src="/js/global.js"></script>

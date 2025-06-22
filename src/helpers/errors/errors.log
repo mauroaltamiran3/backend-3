@@ -2,3 +2,6 @@
 [31mERROR[39m: bad auth : authentication failed
 [31mERROR[39m: bad auth : authentication failed
 [31mERROR[39m: bad auth : authentication failed
+[31mERROR[39m: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[31mERROR[39m: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[31mERROR[39m: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
