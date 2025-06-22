@@ -16,7 +16,8 @@
     "retag-image": "docker tag ecommerce-server tukics/ecommerce:1.0.0",
     "push-image": "docker push tukics/ecommerce:1.0.0",
     "apply-manifest": "kubectl apply -f manifest.yaml",
-    "mocha": "mocha ./test/mocha"
+    "mocha": "mocha ./test/mocha",
+    "chai": "mocha ./test/chai/cart.test.js"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,7 @@
     "artillery-plugin-metrics-by-endpoint": "^1.17.0",
     "bcrypt": "^6.0.0",
     "calculator-tuki-backend": "^2.2.2",
+    "chai": "^5.2.0",
     "cluster": "^0.7.7",
     "commander": "^14.0.0",
     "cookie-parser": "^1.4.7",
