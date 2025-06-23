@@ -22,7 +22,7 @@ const failure = (req, res) => {
 
 const setAdmin = async (req, res) => {
   try {
-    const user = await usersManager.readById(req.user.id);
+    const user = await usersManager.readById(req.user.user_id);
 
     if (!user) return res.status(404).send("❌ Usuario no encontrado");
 
@@ -30,7 +30,7 @@ const setAdmin = async (req, res) => {
     await user.save();
 
     const token = createToken({
-      id: user._id,
+      user_id: user._id,
       email: user.email,
       role: user.role,
       name: user.name,
@@ -50,14 +50,15 @@ const setAdmin = async (req, res) => {
 
 const setUser = async (req, res) => {
   try {
-    const user = await usersManager.readById(req.user.id);
+    const user = await usersManager.readById(req.user.user_id);
+
     if (!user) return res.status(404).send("❌ Usuario no encontrado");
 
     user.role = "USER";
     await user.save();
 
     const token = createToken({
-      id: user._id,
+      user_id: user._id,
       email: user.email,
       role: user.role,
       name: user.name,

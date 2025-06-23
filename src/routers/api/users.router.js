@@ -8,7 +8,7 @@ class UsersRouter extends CustomRouter {
   }
   init = () => {
     this.create("/", ["PUBLIC"], usersController.createOne);
-    this.read("/", ["ADMIN"], usersController.readAll);
+    this.read("/", ["PUBLIC"], usersController.readAll);
     this.read("/:id", ["USER", "ADMIN"], usersController.readById);
     this.update("/:id", ["USER", "ADMIN"], usersController.updateById);
     this.destroy("/:id", ["USER", "ADMIN"], usersController.destroyById);

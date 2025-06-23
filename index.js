@@ -12,7 +12,7 @@ import cookieParser from "cookie-parser";
 import compression from "express-compression";
 import cluster from "cluster";
 import { cpus } from "os";
-import swaggerUi, { setup } from "swagger-ui-express";
+import { serve, setup } from "swagger-ui-express";
 import swaggerSpecs from "./src/helpers/swagger.helper.js";
 import dbConnect from "./src/helpers/dbConnect.helper.js";
 import indexRouter from "./src/routers/index.router.js";
@@ -84,6 +84,7 @@ server.use((req, res, next) => {
         email: decoded.email,
         role: decoded.role,
       };
+      console.log("🧠 Nuevo token payload:", decoded);
     } catch (e) {
       res.locals.usuario = null;
     }
@@ -95,7 +96,7 @@ server.use((req, res, next) => {
 server.use(express.static(path.join(__dirname, "public")));
 
 // 3) swagger
-server.use("/docs", swaggerUi.serve, setup(swaggerSpecs));
+server.use("/api/docs", serve, setup(swaggerSpecs));
 
 // 4) routers
 server.use("/", indexRouter);
@@ -112,5 +113,11 @@ if (cluster.isPrimary) {
     cluster.fork();
   }
 } else {
-  server.listen(port, ready);
+  dbConnect(process.env.LINK_DB)
+    .then(() => {
+      server.listen(port, ready);
+    })
+    .catch((err) => {
+      console.error("❌ Error al conectar a la DB:", err);
+    });
 }

@@ -14,6 +14,8 @@
     "build-image": "docker build -t ecommerce-server .",
     "run-image": "docker run --rm -d --name ecommerce-dev  -p 9090:9090 ecommerce-server",
     "retag-image": "docker tag ecommerce-server tukics/ecommerce:1.0.0",
+    "retag-latest": "docker tag ecommerce-server tukics/ecommerce:latest",
+    "push-latest": "docker push tukics/ecommerce:latest",
     "push-image": "docker push tukics/ecommerce:1.0.0",
     "apply-manifest": "kubectl apply -f manifest.yaml",
     "mocha": "mocha ./test/mocha",

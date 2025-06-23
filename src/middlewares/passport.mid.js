@@ -56,9 +56,12 @@ passport.use(
           });
         }
         const token = createToken({
+          name: user.name,
+          last_name: user.last_name,
           email: user.email,
           role: user.role,
           user_id: user._id,
+          avatar: user.avatar,
         });
         req.token = token;
         done(null, user);
@@ -77,26 +80,30 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: "http://localhost:8080/api/auth/google/callback",
+      callbackURL: "http://localhost:8090/api/auth/google/callback",
       passReqToCallback: true,
     },
     /* callback done con la logica necesaria para la estrategia */
     async (req, accesToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ email: profile.id });
+        let user = await usersManager.readOne({ email: profile.id });
         if (!user) {
           user = {
-            email: profile.id,
+            email: profile.email,
             name: profile.name.givenName,
             avatar: profile.photos[0].value,
             password: createHash(profile.id),
+            last_name: profile.name.familyName,
           };
-          user = await User.createOne(user);
+          user = await usersManager.createOne(user);
         }
         const token = createToken({
           email: user.email,
           role: user.role,
           user_id: user._id,
+          name: user.name,
+          last_name: user.last_name,
+          avatar: user.avatar,
         });
         req.token = token;
         done(null, user);
@@ -116,7 +123,7 @@ passport.use(
     async (data, done) => {
       try {
         const { user_id } = data;
-        const user = await User.findById(user_id);
+        const user = await usersManager.findById(user_id);
         if (!user) {
           return done();
         }
@@ -127,24 +134,24 @@ passport.use(
     }
   )
 );
+
 passport.use(
   "jwt-adm",
   new JwtStrategy(
     {
-      //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.token]),
       secretOrKey: process.env.JWT_KEY,
     },
-    async (data, done) => {
+    async (payload, done) => {
       try {
-        const { user_id, role } = data;
-        const user = await User.findById(user_id);
-        if (user.role !== "ADMIN") {
-          return done(null);
+        const { user_id, role } = payload;
+        const user = await usersManager.readById(user_id);
+        if (!user || role !== "ADMIN") {
+          return done(null, false);
         }
         done(null, user);
       } catch (error) {
-        done(error);
+        done(error, false);
       }
     }
   )

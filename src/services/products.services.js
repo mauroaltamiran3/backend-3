@@ -2,6 +2,7 @@
 import MongoManager from "../dao/managers/mongo.manager.js";
 import CartManager from "../dao/managers/cart.manager.js";
 import crypto from "crypto";
+import bcrypt from "bcrypt";
 
 import Product from "../dao/models/products.model.js";
 import User from "../dao/models/users.model.js";
@@ -30,13 +31,23 @@ class Service {
 }
 
 const productsServices = new Service(productsManager, Product);
-const usersService = new Service(usersManager, User);
+
+class UserService extends Service {
+  updateById = async (id, data) => {
+    if (data.password) {
+      const salt = await bcrypt.genSalt(10);
+      data.password = await bcrypt.hash(data.password, salt);
+    }
+    return this.manager.updateById(id, data);
+  };
+}
 
 const cartsService = {
   ...new Service(cartsManager, Cart),
   readByIdWithPopulate: cartsManager.readByIdWithPopulate,
 };
 
+const usersService = new UserService(usersManager, User);
 const baseTicketService = new Service(ticketManager, Ticket);
 
 const ticketService = {
