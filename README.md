@@ -46,12 +46,13 @@ El backend incluye diferentes tipos de pruebas automáticas:
 - **Mocha + Chai**: pruebas unitarias y aserciones.
 - **Artillery**: pruebas de carga y stress.
 
-- 📦 Imagen Docker
+## 📦 Imagen Docker
 Podés clonar o usar directamente la imagen pública desde DockerHub:
 
 👉 docker pull tukics/ecommerce
+https://hub.docker.com/r/tukics/ecommerce
 
-🌐 Demo en línea (Render)
+## 🌐 Demo en línea (Render)
 👉 https://backend-3-7sim.onrender.com/
 
 Comandos útiles:
@@ -59,3 +60,22 @@ Comandos útiles:
 npm run super         # Tests con Supertest
 npm run chai          # Test unitario sobre carrito
 npm run artillery-flujo  # Flujo login + creación de producto + logout
+
+# 1. Clonar el proyecto
+git clone https://github.com/tu-usuario/backend-ecommerce.git
+cd backend-ecommerce
+
+# 2. Crear archivo .env con las siguientes variables:
+PORT=8090
+JWT_KEY=tu_clave_secreta
+GOOGLE_CLIENT_ID=...
+GOOGLE_SECRET=...
+LINK_DB=mongodb+srv://...
+
+# 3. Instalar dependencias
+npm install
+
+# 4. Ejecutar
+npm run dev   # para desarrollo
+npm start     # para producción
+
