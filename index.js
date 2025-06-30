@@ -75,6 +75,7 @@ server.use((req, res, next) => {
 });
 server.use((req, res, next) => {
   const token = req.cookies.token;
+  const cid = req.cookies.cid;
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_KEY);
@@ -84,7 +85,8 @@ server.use((req, res, next) => {
         email: decoded.email,
         role: decoded.role,
       };
-      console.log("🧠 Nuevo token payload:", decoded);
+      // console.log("🧠 Nuevo token payload:", decoded);
+      // console.log(" CID:", cid);
     } catch (e) {
       res.locals.usuario = null;
     }

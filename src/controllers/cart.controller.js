@@ -150,34 +150,36 @@ const cartCustomController = {
   validate: async (req, res) => {
     try {
       const { cid } = req.params;
-
       const carrito = await cartsService.readByIdWithPopulate(cid);
 
       if (!carrito) {
-        return res
-          .status(404)
-          .json({ valido: false, mensaje: "Carrito no encontrado" });
-      }
-
-      const productosValidos = carrito.products.filter(
-        (p) => p.product && p.product.title
-      );
-
-      if (productosValidos.length < carrito.products.length) {
-        return res.status(400).render("cart/comprar", {
-          error: "Hay productos que ya no están disponibles",
-          productos: [],
-          total: 0,
-          fecha: new Date(),
+        return res.status(404).json({ 
+          valido: false, 
+          mensaje: "Carrito no encontrado" 
         });
       }
 
-      res.json({ valido: true });
+      const productosValidos = carrito.products.filter(
+        p => p.product && p.product.title
+      );
+
+      if (productosValidos.length < carrito.products.length) {
+        return res.status(400).json({
+          valido: false,
+          error: "Hay productos no disponibles",
+          productos: [],
+          total: 0
+        });
+      }
+
+      return res.json({ valido: true });
+
     } catch (error) {
-      console.error("Error validando carrito:", error.message, error.stack);
-      res
-        .status(500)
-        .json({ valido: false, mensaje: "Error al validar carrito" });
+      console.error("Error:", error);
+      return res.status(500).json({ 
+        valido: false, 
+        mensaje: "Error interno" 
+      });
     }
   },
 
@@ -202,7 +204,7 @@ const cartCustomController = {
     carrito.products = [];
     await carrito.save();
 
-    return res.render("cart/comprar", {
+    return res.render("comprar", {
       productos,
       total,
       fecha: new Date(),

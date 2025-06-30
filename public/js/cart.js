@@ -97,22 +97,33 @@ document.addEventListener("DOMContentLoaded", () => {
         location.reload();
       }
     });
-
   document.getElementById("btn-comprar").addEventListener("click", async () => {
-    const response = await fetch(`/api/carts/${cid}/validate`);
-    const resultado = await response.json();
+    try {
+      const url = `/api/carts/${cid}/validate`;
+      console.log("Llamando a:", url);
+      
+      const response = await fetch(url);
+      const rawResponse = await response.text(); // Primero lee como texto
+      console.log("Respuesta cruda:", rawResponse);
 
-    if (!response.ok) {
-      return alert(
-        "❌ El carrito no es válido para comprar.\n" + (resultado.mensaje || "")
-      );
+      // Intenta parsear solo si parece JSON
+      const data = rawResponse.startsWith('{') ? JSON.parse(rawResponse) : rawResponse;
+      
+      if (!response.ok) {
+        throw new Error(data.error || data.mensaje || "Error desconocido");
+      }
+
+      if (!data.valido) {
+        return alert("❌ Carrito no válido");
+      }
+
+      if (confirm("¿Confirmar compra?")) {
+        window.location.href = `/cart/${cid}/buyCart`;
+      }
+      
+    } catch (error) {
+      console.error("Error completo:", error);
+      alert(`Error: ${error.message || "Verifica la consola"}`);
     }
-
-    const confirmar = confirm(
-      "¿Estás seguro de que quieres comprar el carrito?"
-    );
-    if (!confirmar) return;
-
-    window.location.href = `/cart/${cid}/buyCart`;
   });
 });

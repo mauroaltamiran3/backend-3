@@ -1,4 +1,5 @@
 import { usersManager } from "../dao/mongo.manager.js";
+import { createToken } from "../helpers/token.helper.js";
 
 const register = async (req, res) => {
   const user = req.user;
